@@ -13,7 +13,6 @@ conectarDB();
 // Routing
 app.use('/api/usuarios', usuarioRoutes)
 
-
 const PORT = process.env.PORT || 4000;  //Para cuando haga el deployment --> se asigna un puerto en especifico
 
 app.listen(PORT, () => {
