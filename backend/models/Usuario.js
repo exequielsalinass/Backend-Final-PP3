@@ -13,6 +13,11 @@ const usuarioSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
+    password2: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     email: {
       type: String,
       required: true,
@@ -38,6 +43,14 @@ usuarioSchema.pre('save', async function(next){         //* No uso un arrow func
   }
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt)
+})
+
+usuarioSchema.pre('save', async function(next){         //* No uso un arrow function porque ocupo el this
+  if(!this.isModified('password2')) {
+    next();
+  }
+  const salt = await bcrypt.genSalt(10);
+  this.password2 = await bcrypt.hash(this.password2, salt)
 })
 
 usuarioSchema.methods.comprobarPassword = async function (passwordFormulario) {

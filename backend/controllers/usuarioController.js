@@ -1,32 +1,47 @@
-import Usuario from '../models/Usuario.js'
-import generarId from '../helpers/generarId.js'
+import Usuario from "../models/Usuario.js";
+import generarId from "../helpers/generarId.js";
 import generarJWT from "../helpers/generarJWT.js";
 
 // CREAR UN NUEVO USUARIO Y REGISTRARLO EN LA BD
 
-const registrar = async (req, res) => {                         //* req: datos que envio || res: datos que obtengo
+const registrar = async (req, res) => {
+  //* req: datos que envio || res: datos que obtengo
   // Evitar registros duplicados
-  const { email, password } = req.body;                            
+  const { email, password, password2 } = req.body;
   const existeUsuario = await Usuario.findOne({ email });
 
   // Validaciones para la password
-  if(!password.match(/[A-z]/)) {
+  // Verificar que tenga una letra
+  if (!password.match(/[A-z]/)) {
     const error = new Error("La contraseña debe contar con una letra");
     return res.status(400).json({ msg: error.message });
   }
 
-  if(!password.match(/[A-Z]/)) {
-    const error = new Error("La contraseña debe contar con una letra mayúscula");
+  // Verificar que tenga una letra mayúscula
+  if (!password.match(/[A-Z]/)) {
+    const error = new Error(
+      "La contraseña debe contar con una letra mayúscula"
+    );
     return res.status(400).json({ msg: error.message });
   }
 
-  if(!password.match(/\d/)) {
+  // Verificar que tenga un numero
+  if (!password.match(/\d/)) {
     const error = new Error("La contraseña debe contar con un número");
     return res.status(400).json({ msg: error.message });
   }
 
-  if(password.length < 8) {
-    const error = new Error("La contraseña debe ser igual o mayor a 8 caracteres");
+  // Longitud de la password
+  if (password.length < 8) {
+    const error = new Error(
+      "La contraseña debe ser igual o mayor a 8 caracteres"
+    );
+    return res.status(400).json({ msg: error.message });
+  }
+
+  //Evitar contraseñas incorrectas
+  if (password !== password2) {
+    const error = new Error("La contraseña deben coincidir");
     return res.status(400).json({ msg: error.message });
   }
 
@@ -37,7 +52,7 @@ const registrar = async (req, res) => {                         //* req: datos q
   }
 
   try {
-    const usuario = new Usuario(req.body);      //* son los datos que mando por postman
+    const usuario = new Usuario(req.body); //* son los datos que mando por postman
     usuario.token = generarId();
     await usuario.save();
 
@@ -71,7 +86,7 @@ const autenticar = async (req, res) => {
   }
   //Comprobar su password
   if (await usuario.comprobarPassword(password)) {
-    // creo un objeto con los datos que necesito, si no me devuelvo todo el objecto de usuario
+    // creo un objeto con los datos que necesito, si no me devuelve todo el objecto de usuario
     res.json({
       _id: usuario._id,
       nombre: usuario.nombre,
@@ -87,7 +102,8 @@ const autenticar = async (req, res) => {
 const confirmar = async (req, res) => {
   const { token } = req.params;
   const usuarioConfirmar = await Usuario.findOne({ token });
-  if (!usuarioConfirmar) {                                    //* == si no existe el usuarioConfirmar
+  if (!usuarioConfirmar) {
+    //* == si no existe el usuarioConfirmar
     const error = new Error("Token no válido");
     return res.status(403).json({ msg: error.message });
   }
@@ -113,12 +129,12 @@ const olvidePassword = async (req, res) => {
     usuario.token = generarId();
     await usuario.save();
 
-    //Enviar el email
+    /* //Enviar el email
     emailOlvidePassword({
       email: usuario.email,
       nombre: usuario.nombre,
       token: usuario.token
-    })
+    }) */
 
     res.json({ msg: "Hemos enviado un email con las instrucciones" });
   } catch (error) {
@@ -126,4 +142,73 @@ const olvidePassword = async (req, res) => {
   }
 };
 
-export { registrar, autenticar, confirmar, olvidePassword }
+const comprobarToken = async (req, res) => {
+  const { token } = req.params;
+
+  const tokenValido = await Usuario.findOne({ token });
+
+  if (tokenValido) {
+    res.json({ msg: "Token válido y el Usuario existe" });
+  } else {
+    const error = new Error("Token no válido");
+    return res.status(404).json({ msg: error.message });
+  }
+};
+
+const nuevoPassword = async (req, res) => {
+  const { token } = req.params;
+  const { password, password2 } = req.body;
+
+  const usuario = await Usuario.findOne({ token });
+
+  // Validaciones para la password
+  // Verificar que tenga una letra
+  if (!password.match(/[A-z]/)) {
+    const error = new Error("La contraseña debe contar con una letra");
+    return res.status(400).json({ msg: error.message });
+  }
+
+  // Verificar que tenga una letra mayúscula
+  if (!password.match(/[A-Z]/)) {
+    const error = new Error(
+      "La contraseña debe contar con una letra mayúscula"
+    );
+    return res.status(400).json({ msg: error.message });
+  }
+
+  // Verificar que tenga un numero
+  if (!password.match(/\d/)) {
+    const error = new Error("La contraseña debe contar con un número");
+    return res.status(400).json({ msg: error.message });
+  }
+
+  // Longitud de la password
+  if (password.length < 8) {
+    const error = new Error(
+      "La contraseña debe ser igual o mayor a 8 caracteres"
+    );
+    return res.status(400).json({ msg: error.message });
+  }
+
+  //Evitar contraseñas incorrectas
+  if (password !== password2) {
+    const error = new Error("La contraseña deben coincidir");
+    return res.status(400).json({ msg: error.message });
+  }
+
+  if (usuario) {
+    usuario.password = password;
+    usuario.token = "";
+    try {
+      await usuario.save();
+      res.json({ msg: "Password modificado correctamente" });
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    const error = new Error("Token no válido");
+    return res.status(404).json({ msg: error.message });
+  }
+};
+
+export { registrar, autenticar, confirmar, olvidePassword, comprobarToken, nuevoPassword };
