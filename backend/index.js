@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from 'dotenv'
 import conectarDB from "./config/db.js";
 import usuarioRoutes from './routes/usuarioRoutes.js'
+import unidadRoutes from './routes/unidadRoutes.js'
 
 const app = express();
 app.use(express.json())
@@ -12,6 +13,7 @@ conectarDB();
 
 // Routing
 app.use('/api/usuarios', usuarioRoutes)
+app.use("/api/unidades", unidadRoutes);
 
 const PORT = process.env.PORT || 4000;  //Para cuando haga el deployment --> se asigna un puerto en especifico
 

@@ -168,6 +168,43 @@ router.get("/confirmar/:token", confirmar);
 Luego validamos: primero extraemos el *token* de ``req.params``, para luego saber si el token del usuario existe o no.
 Si el token que tenemos como respuesta es válido, entonces lo que haremos es cambiar al usuario.confirmado como ``true``, y por último eliminamos el *token*
 
+-----------------------------------------------------------------------
+
+Recuperar password: validamos mediante el email si el usuario existe, luego generamos de vuelta el token. Para más adelante crear el algoritmo de enviar el token por email.
+
+-----------------------------------------------------------------------------
+
+Comprobar token: creamos otro routing dinámico. 
+
+```javascript
+router.get("/olvide-password/:token", comprobarToken); 
+```
+
+Validamos que el token sea correcto.
+
+-------------------------------------------------------------------------
+
+Generar nuevo password: Obtenemos el password y el password2 del formulario, lo almacenamos como un nuevo password y convertimos el token en un string vacio
+
+La ruta dinamica es: 
+
+```javascript
+router.post("/olvide-password/:token", nuevoPassword); 
+```
+
+--------------------------------------------------------------------------
+
+Creamos un "Custom Middleware" para la autenticación.
+
+1. Creamos la carpeta middleware
+2. Dentro de la carpeta creamos el archivo ```checkAuth.js`` 
+3. Creamos un nueva ruta que determina mediante la funcion ``chechAuth`` que todo este bien, para luego permitirle al usuario tener acceso a su perfil (de esta forma protegemos esa ruta)
+
+> CheckAuth
+
+Valida que el JTW sea válido y que este enviado vía *Barer* y *header* , si todo esta bien, con ``next()`` hacemos que pase al siguiente middleware -> ``perfil``
+
+--------------------------------------------------------------------------
 
 
 
