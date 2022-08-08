@@ -26,9 +26,9 @@ const tareasSchema = mongoose.Schema(
       required: true,
       default: Date.now(),
     },
-    proyecto: {
+    unidad: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Proyecto",
+      ref: "Unidad",
     },
     /* completado: {
       type: mongoose.Schema.Types.ObjectId,
