@@ -20,28 +20,39 @@ function Registrar() {
       return;
     }
 
+    if (password !== repetirPassword) {
+      setAlerta({
+        msg: "Las contraseñas deben ser iguales",
+        error: true,
+      });
+    }
+
     setAlerta({});
 
     //Crear el usuario en la API
 
     try {
-      const {data} = await clienteAxios.post(`/usuarios`, {nombre, email, password});
-      
+      const { data } = await clienteAxios.post(`/usuarios`, {
+        nombre,
+        email,
+        password,
+      });
+
       setAlerta({
         msg: data.msg,
-        error: false
-      })
+        error: false,
+      });
 
-      setNombre('')
-      setEmail('')
-      setPassword('')
-      setRepetirPassword('')
+      setNombre("");
+      setEmail("");
+      setPassword("");
+      setRepetirPassword("");
     } catch (error) {
       // console.log()  //*Documentacion de axios
       setAlerta({
         msg: error.response.data.msg,
-        error: true
-      })
+        error: true,
+      });
     }
   };
 

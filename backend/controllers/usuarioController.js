@@ -1,6 +1,7 @@
 import Usuario from "../models/Usuario.js";
 import generarId from "../helpers/generarId.js";
 import generarJWT from "../helpers/generarJWT.js";
+import { emailRegistro, emailOlvidePassword } from "../helpers/emails.js";
 
 // CREAR UN NUEVO USUARIO Y REGISTRARLO EN LA BD
 
@@ -50,12 +51,12 @@ const registrar = async (req, res) => {
     usuario.token = generarId();
     await usuario.save();
 
-    /* //* Enviar el email de confirmacion
+    //* Enviar el email de confirmacion
     emailRegistro({
       email: usuario.email,
       nombre: usuario.nombre,
       token: usuario.token,
-    }); */
+    });
 
     res.json({
       msg: "Usuario creado correctamente, revisa tu email para confirmar tu cuenta",
@@ -151,7 +152,7 @@ const comprobarToken = async (req, res) => {
 
 const nuevoPassword = async (req, res) => {
   const { token } = req.params;
-  const { password, password2 } = req.body;
+  const { password } = req.body;
 
   const usuario = await Usuario.findOne({ token });
 
@@ -181,12 +182,6 @@ const nuevoPassword = async (req, res) => {
     const error = new Error(
       "La contraseña debe ser igual o mayor a 8 caracteres"
     );
-    return res.status(400).json({ msg: error.message });
-  }
-
-  //Evitar contraseñas incorrectas
-  if (password !== password2) {
-    const error = new Error("La contraseña deben coincidir");
     return res.status(400).json({ msg: error.message });
   }
 
