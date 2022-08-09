@@ -7,7 +7,7 @@ import generarJWT from "../helpers/generarJWT.js";
 const registrar = async (req, res) => {
   //* req: datos que envio || res: datos que obtengo
   // Evitar registros duplicados
-  const { email, password, password2 } = req.body;
+  const { email, password } = req.body;
   const existeUsuario = await Usuario.findOne({ email });
 
   // Validaciones para la password
@@ -36,12 +36,6 @@ const registrar = async (req, res) => {
     const error = new Error(
       "La contraseña debe ser igual o mayor a 8 caracteres"
     );
-    return res.status(400).json({ msg: error.message });
-  }
-
-  //Evitar contraseñas incorrectas
-  if (password !== password2) {
-    const error = new Error("La contraseña deben coincidir");
     return res.status(400).json({ msg: error.message });
   }
 

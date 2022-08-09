@@ -13,11 +13,6 @@ const usuarioSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    password2: {
-      type: String,
-      required: true,
-      trim: true,
-    },
     email: {
       type: String,
       required: true,
