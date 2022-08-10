@@ -1,9 +1,10 @@
-/* import useProyectos from "../hooks/useProyectos";
-import PreviewProyecto from "../components/PreviewProyecto"; */
+import useUnidades from "../hooks/useUnidades";
+/* import PreviewProyecto from "../components/PreviewProyecto"; */
 import Alerta from "../components/Alerta";
 
 function Unidades() {
-  /* const { proyectos, alerta } = useProyectos(); */
+  const { unidades /* alerta */ } = useUnidades();
+  console.log(unidades)
 
   /* const { msg } = alerta */
 
