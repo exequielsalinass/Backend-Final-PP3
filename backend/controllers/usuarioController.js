@@ -124,12 +124,12 @@ const olvidePassword = async (req, res) => {
     usuario.token = generarId();
     await usuario.save();
 
-    /* //Enviar el email
+    //Enviar el email
     emailOlvidePassword({
       email: usuario.email,
       nombre: usuario.nombre,
       token: usuario.token
-    }) */
+    })
 
     res.json({ msg: "Hemos enviado un email con las instrucciones" });
   } catch (error) {

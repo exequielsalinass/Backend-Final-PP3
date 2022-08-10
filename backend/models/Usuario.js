@@ -40,13 +40,13 @@ usuarioSchema.pre('save', async function(next){         //* No uso un arrow func
   this.password = await bcrypt.hash(this.password, salt)
 })
 
-usuarioSchema.pre('save', async function(next){         //* No uso un arrow function porque ocupo el this
+/* usuarioSchema.pre('save', async function(next){         //* No uso un arrow function porque ocupo el this
   if(!this.isModified('password2')) {
     next();
   }
   const salt = await bcrypt.genSalt(10);
   this.password2 = await bcrypt.hash(this.password2, salt)
-})
+}) */
 
 usuarioSchema.methods.comprobarPassword = async function (passwordFormulario) {
   return await bcrypt.compare(passwordFormulario, this.password)    //* this.password --> instancia del usuario que estamos comprobando

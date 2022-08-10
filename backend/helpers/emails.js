@@ -52,7 +52,7 @@ export const emailOlvidePassword = async (datos) => {
     to: email,
     subject: "LearningEnglish - Restablece tu contraseña",
     text: "Restablece tu contraseña en LearningEnglish",
-    html: `<p>Hola: ${nombre}, restablece tu contraseña en LearningEnglish</p>
+    html: `<p style="color:blue; font-size:20px;">Hola: ${nombre}, restablece tu contraseña en LearningEnglish</p>
     <p>Para generar un nuevo password, solo debes darle 'click' al siguiente enlace:
         <a href="${process.env.FRONTEND_URL}/olvide-password/${token}">Restablece tu contraseña</a>
     </p>

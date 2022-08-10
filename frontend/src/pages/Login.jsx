@@ -1,42 +1,49 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Alerta from "../components/Alerta";
+import clienteAxios from "../config/clienteAxios";
+import useAuth from "../hooks/useAuth";
 
 function Login() {
-  /* const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [alerta, setAlerta] = useState({})
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [alerta, setAlerta] = useState({});
 
   // Importar datos del context
-  const { setAuth } = useAuth()
+  const { setAuth } = useAuth();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const handleSubmit = async e => {
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    if([email, password].includes('')) {
+    if ([email, password].includes("")) {
       setAlerta({
-        msg: 'Todos los campos son obligatorios',
-        error: true
-      })
-      return
+        msg: "Todos los campos son obligatorios",
+        error: true,
+      });
+      return;
     }
 
     try {
-      const { data } = await clienteAxios.post('/usuarios/login', { email, password })
-      setAlerta({})
-      localStorage.setItem('token', data.token)
-      setAuth(data)
-      navigate('/proyectos')
+      const { data } = await clienteAxios.post("/usuarios/login", {
+        email,
+        password,
+      });
+      setAlerta({});
+      localStorage.setItem("token", data.token);
+      setAuth(data);
+      /* navigate("/proyectos"); */
+      
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg,
-        error: true
-      })
+        error: true,
+      });
     }
+  };
 
-  }
-
-  const { msg } = alerta */
+  const { msg } = alerta;
 
   return (
     <>
@@ -54,17 +61,17 @@ function Login() {
               />
             </div>
             <div className="md:w-8/12 lg:w-5/12 lg:ml-20 ">
-              {/* LOGIN HECHO POR MI */}
+              {/* // TODO: Revisar a partir de aqui */}
               <h1 className="text-sky-600 font-black text-6xl capitalize text-center">
                 Inicia sesión y administra tus{" "}
                 <span className="text-slate-700">Tareas</span>
               </h1>
 
-              {/* { msg && <Alerta alerta={alerta} />} */}
+              {msg && <Alerta alerta={alerta} />}
 
               <form
                 className="mt-10 mb-5 bg-white shadow rounded-lg p-10 "
-                /* onSubmit={handleSubmit} */
+                onSubmit={handleSubmit}
               >
                 <div className="my-5">
                   <label
@@ -78,8 +85,8 @@ function Login() {
                     type="email"
                     placeholder="Email de Registro"
                     className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
-                    /* value={email}
-                        onChange={e => setEmail(e.target.value)} */
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="my-5">
@@ -94,8 +101,8 @@ function Login() {
                     type="password"
                     placeholder="Password de Registro"
                     className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
-                    /* value={password}
-                    onChange={(e) => setPassword(e.target.value)} */
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
 
