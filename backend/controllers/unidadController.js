@@ -4,7 +4,7 @@ import Usuario from "../models/Usuario.js";
 const obtenerUnidades = async (req, res) => {
   const unidades = await Unidad.find({
     $or: [{ alumnos: { $in: req.usuario } }, { creador: { $in: req.usuario } }],
-  }); /* .select("-tareas"); */
+  }).select("-tareas");
 
   res.json(unidades);
 };

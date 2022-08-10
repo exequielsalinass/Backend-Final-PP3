@@ -25,12 +25,12 @@ const unidadesSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,     //* La persona que crea el proyecto es la unica que puede asignar tareas
       ref: "Usuario",
     },
-    /* tareas: [
+    tareas: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Tarea",
       },
-    ], */
+    ],
     alumnos: [        //* Es un arreglo porque una unidad puede tener múltiples alumnos
       {
         type: mongoose.Schema.Types.ObjectId,

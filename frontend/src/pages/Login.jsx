@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link /* useNavigate */ } from "react-router-dom";
 import Alerta from "../components/Alerta";
 import clienteAxios from "../config/clienteAxios";
 import useAuth from "../hooks/useAuth";
@@ -33,7 +33,7 @@ function Login() {
       setAlerta({});
       localStorage.setItem("token", data.token);
       setAuth(data);
-      /* navigate("/proyectos"); */
+      navigate("/unidades");
       
     } catch (error) {
       setAlerta({
