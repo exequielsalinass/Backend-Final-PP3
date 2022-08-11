@@ -15,10 +15,10 @@ function RutaProtegida() {
         <div className="bg-gray-100">
           <Header />
 
-          <div className="md:flex bg-slate-600 md:min-h-screen">
+          <div className="md:flex  md:min-h-screen">
             <Sidebar />
 
-            <main className="p-10 bg-rose-500 flex-1">
+            <main className="p-10  flex-1">
               <Outlet />
             </main>
           </div>

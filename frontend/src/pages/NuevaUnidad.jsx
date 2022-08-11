@@ -1,9 +1,15 @@
-import React from 'react'
+import FormularioUnidad from "../components/FormularioUnidad";
 
 function NuevaUnidad() {
   return (
-    <div>NuevaUnidad</div>
-  )
+    <>
+      <h1 className="text-4xl font-black">Nueva Unidad</h1>
+
+      <div className="mt-10 flex justify-center">
+        <FormularioUnidad />
+      </div>
+    </>
+  );
 }
 
-export default NuevaUnidad
+export default NuevaUnidad;

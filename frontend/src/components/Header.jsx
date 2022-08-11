@@ -15,7 +15,7 @@ function Header() {
         <div className="flex flex-col md:flex-row items-center gap-4">
           <button
             type="button"
-            className="font-bold uppercase rounded-lg border border-cyan-800 p-1"
+            className="font-bold text-sm text-gray-400 uppercase rounded-lg border border-cyan-800 p-1"
             /* onClick={handleBuscador} */
           >
             Buscar Unidad
