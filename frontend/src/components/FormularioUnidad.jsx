@@ -1,35 +1,32 @@
-/* import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"
 import { useParams } from 'react-router-dom'
-import useProyectos from "../hooks/useProyectos";
-import Alerta from "./Alerta"; */
-import { useState } from "react"
 import useUnidades from "../hooks/useUnidades";
 import Alerta from "./Alerta";
 
 const niveles = ["Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6"];
 
 function FormularioUnidad() {
-  /* const [id, setId] = useState(null); */
+  const [id, setId] = useState(null);
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [fechaEntrega, setFechaEntrega] = useState("");
   const [nivel, setNivel] = useState("");
 
-  /* const params = useParams() */
-  const { mostrarAlerta, alerta, submitUnidad } = useUnidades();
+  const params = useParams()
+  const { mostrarAlerta, alerta, submitUnidad, unidad } = useUnidades();
 
 
-  /* useEffect(() => {
+  useEffect(() => {
     if(params.id) {
       setId(unidad._id)
       setNombre(unidad.nombre)
       setDescripcion(unidad.descripcion)
-      setFechaEntrega(unidad.fechaEntrega?.split('T')[0])
-      setCliente(unidad.nivel)
+      setFechaEntrega(unidad.fechaInicio?.split('T')[0])
+      setNivel(unidad.nivel)
     } else {
       console.log('Nuevo Unidad')
     }
-  }, [params]) */
+  }, [params])
   
 
   const handleSubmit = async (e) => {
@@ -45,9 +42,9 @@ function FormularioUnidad() {
     }
 
     // Pasar los datos al provider
-    await submitUnidad({ /* id, */ nombre, descripcion, fechaEntrega, nivel });
+    await submitUnidad({ id, nombre, descripcion, fechaEntrega, nivel });
 
-    /* setId(null) */
+    setId(null)
     setNombre("");
     setDescripcion("");
     setFechaEntrega("");
@@ -58,7 +55,7 @@ function FormularioUnidad() {
 
   return (
     <form
-      className="bg-white py-10 px-5 md:w-1/2 rounded-lg shadow"
+      className="bg-white py-10 px-5 md:w-3/4 rounded-lg shadow"
       onSubmit={handleSubmit}
     >
       {msg && <Alerta alerta={alerta} />}
@@ -91,7 +88,7 @@ function FormularioUnidad() {
 
         <textarea
           id="descripcion"
-          className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+          className="border w-full h-80 p-2 mt-2 placeholder-gray-400 rounded-md"
           placeholder="Descripción de la Unidad"
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
@@ -137,8 +134,7 @@ function FormularioUnidad() {
 
       <input
         type="submit"
-        value='Crear Unidad'
-        /* value={id ? "Actualizar Unidad" : "Crear Unidad"} */
+        value={id ? "Actualizar Unidad" : "Crear Unidad"}
         className="bg-sky-600 w-full p-3 uppercase font-bold text-white rounded cursor-pointer hover:bg-sky-700 transition-colors"
       />
     </form>

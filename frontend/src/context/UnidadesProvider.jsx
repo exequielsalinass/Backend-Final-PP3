@@ -44,13 +44,13 @@ const UnidadesProvider = ({ children }) => {
 
   const submitUnidad = async (unidad) => {
     if (unidad.id) {
-      await editarProyecto(unidad);
+      await editarUnidad(unidad);
     } else {
       await nuevaUnidad(unidad);
     }
   };
 
-  /* const editarUnidad = async (unidad) => {
+  const editarUnidad = async (unidad) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
@@ -69,13 +69,13 @@ const UnidadesProvider = ({ children }) => {
       );
       // Sincronizar el state
       const unidadesActualizadas = unidades.map((unidadState) =>
-      unidadState._id === data._id ? data : unidadState
+        unidadState._id === data._id ? data : unidadState
       );
-      setProyectos(unidadesActualizadas);
+      setUnidades(unidadesActualizadas);
 
       // Mostrar el mensaje de alerta
       setAlerta({
-        msg: "Unidad Actualizado Correctamente",
+        msg: "Unidad Actualizada Correctamente",
         error: false,
       });
 
@@ -87,7 +87,7 @@ const UnidadesProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  }; */
+  };
 
   const nuevaUnidad = async (unidad) => {
     try {
@@ -103,7 +103,7 @@ const UnidadesProvider = ({ children }) => {
 
       const { data } = await clienteAxios.post("/unidades", unidad, config);
 
-      setUnidades([...unidades, data]);     //Tomo una copia de las unidades actuales y le agrego data
+      setUnidades([...unidades, data]); //Tomo una copia de las unidades actuales y le agrego data
 
       setAlerta({
         msg: "Unidad Creada Correctamente",
@@ -134,18 +134,52 @@ const UnidadesProvider = ({ children }) => {
 
       const { data } = await clienteAxios(`/unidades/${id}`, config);
       setUnidad(data);
-      setAlerta({})
+      setAlerta({});
     } catch (error) {
-      navigate('/unidades')
+      navigate("/unidades");
       setAlerta({
         msg: error.response.data.msg,
         error: true,
       });
       setTimeout(() => {
-        setAlerta({})
+        setAlerta({});
       }, 3000);
     }
     setCargando(false);
+  };
+
+  const eliminarUnidad = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await clienteAxios.delete(`/unidades/${id}`, config);
+
+      //Sincronizar el state
+      const unidadesActualizadas = unidades.filter(
+        (unidadState) => unidadState._id !== id
+      );
+      setUnidades(unidadesActualizadas);
+
+      setAlerta({
+        msg: data.msg,
+        error: false,
+      });
+
+      setTimeout(() => {
+        setAlerta({});
+        navigate("/unidades");
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -157,7 +191,8 @@ const UnidadesProvider = ({ children }) => {
         submitUnidad,
         obtenerUnidad,
         unidad,
-        cargando
+        cargando,
+        eliminarUnidad
       }}
     >
       {children}
