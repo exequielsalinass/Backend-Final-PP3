@@ -1,16 +1,19 @@
 import { useState, useEffect, createContext } from "react";
 import clienteAxios from "../config/clienteAxios";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const UnidadContext = createContext();
 
 const UnidadesProvider = ({ children }) => {
   const [unidades, setUnidades] = useState([]);
-  const [alerta, setAlerta] = useState({});
   const [unidad, setUnidad] = useState({});
+  const [alerta, setAlerta] = useState({});
   const [cargando, setCargando] = useState(false);
 
   const navigate = useNavigate();
+
+  const { auth } = useAuth()    //Porque sino no me carga el contenido cuando inicio sesion
 
   useEffect(() => {
     const obtenerUnidades = async () => {
@@ -32,7 +35,7 @@ const UnidadesProvider = ({ children }) => {
       }
     };
     obtenerUnidades();
-  }, []);
+  }, [auth]);
 
   const mostrarAlerta = (alerta) => {
     setAlerta(alerta);
@@ -182,6 +185,12 @@ const UnidadesProvider = ({ children }) => {
     }
   };
 
+  const cerrarSesionUnidades = () => {
+    setUnidades([])
+    setUnidad({})
+    setAlerta({})
+  }
+
   return (
     <UnidadContext.Provider
       value={{
@@ -192,7 +201,8 @@ const UnidadesProvider = ({ children }) => {
         obtenerUnidad,
         unidad,
         cargando,
-        eliminarUnidad
+        eliminarUnidad,
+        cerrarSesionUnidades
       }}
     >
       {children}

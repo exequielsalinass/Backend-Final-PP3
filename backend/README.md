@@ -11,6 +11,8 @@
 5. Dotenv (Para crear variables de entorno)
 6. Bcrypt (Hashear passwords)
 7. Jsonwebtoken (Generar el token)
+8. Cors (Permitir envio de datos de un dominio a otro)
+9. Nodemailer (Para enviar emails)
 
 ### Modificaciones en package.json
 
@@ -206,8 +208,92 @@ Valida que el JTW sea válido y que este enviado vía *Barer* y *header* , si to
 
 --------------------------------------------------------------------------
 
+> Comienzo de backend de las unidades
 
+1. Creo el Modelo de unidades --> Unidades.js (models)
+2. Creo el Routing y Controller de unidades --> unidadRoutes.js (rutes) - unidadController.js (controllers)
+3. Establezco el routing en index.js ``app.use("/api/unidades", unidadRoutes);``
 
+--------------------------------------------------------------------------
 
+Nueva unidad: para crear una unidad el usuario debe estar logeado, gracias a ``checkAuth.js`` lo podemos comprobar, luego creamos una unidad con los valores que recibimos y le asignamos un creador: ``unidad.creador = req.usuario._id;``
 
+--------------------------------------------------------------------------
+
+Obtener unidades: Debo obtener las unidades que el usuario creó unicamente. Para ello realizo la siguiente validacion: ``const unidades = await Unidad.find().where('creador').equals(req.usuario)``
+
+https://mongoosejs.com/docs/api/query.html#query_Query-equals
+
+https://mongoosejs.com/docs/api/query.html#query_Query-where
+
+--------------------------------------------------------------------------
+
+Obtener una sola unidad: Gracias al routing dinamico puedo obtener el id de la unidad con ```req.params``
+
+Obtendo la unidad con le metodo ```findById()``, y la envio como respuesta en formato json.
+
+--------------------------------------------------------------------------
+
+Editar unidad: Tengo las mismas medidas de seguridad que en obtener unidad.
+
+``unidad.nombre = req.body.nombre || unidad.nombre; ``
+
+Si el usuario envia informacion la sobreescribo, sino dejo la información que ya existe.
+
+Luego lo guardo.
+
+``const unidadAlmacenada = await unidad.save();``
+   `` res.json(unidadAlmacenada);``
+
+--------------------------------------------------------------------------
+
+Eliminar unidad: Otra vez los mismos métodos de seguridad
+
+Para eliminar uso el método ```deleteOne()`` que me proporciona mongoose.
+
+La respuesta es un mensaje que dice "Unidad eliminada"
+
+--------------------------------------------------------------------------
+
+> Comienzo de backend de las tareas
+
+1. Creo el Modelo de tareas --> Tareas.js (models)
+2. Creo el Routing y Controller de tareas --> tareaRoutes.js (rutes) - tareaController.js (controllers)
+3. Establezco el routing en index.js ``app.use("/api/tareas", tareaRoutes);``
+
+--------------------------------------------------------------------------
+
+Crear agregar tarea: Importo información de unidades.
+
+Valido si existe la unidad, y si el usuario creador de la unidad es el mismo usuario que quiere crear la tarea.
+
+Creo la tarea con la informacion recibida en el body.
+
+--------------------------------------------------------------------------
+
+Obtener tarea: Gracias al routing dinamico puedo obtener el id de la tarea con ```req.params``
+
+Obtengo la tarea con le metodo ```findById()``,luego para no tener dos consultar iguales, simplifico la consulta con ``populate()`` para traerme la informacion de la tarea cruzada con la información de la unidad. De éste modo puedo comprobar si el creador de la unidad es el mismo que quiere obtener la tarea.
+
+--------------------------------------------------------------------------
+
+Actualidar / Editar tarea: Tengo las mismas medidas de seguridad que en obtener tarea.
+
+``tarea.nombre = req.body.nombre || tarea.nombre;``
+
+Si el usuario envia informacion la sobreescribo, sino dejo la información que ya existe.
+
+Luego lo guardo.
+
+``const tareaAlmacenda = await tarea.save();``
+
+--------------------------------------------------------------------------
+
+Eliminar tarea: Otra vez los mismos métodos de seguridad
+
+Para eliminar uso el método ```deleteOne()`` que me proporciona mongoose.
+
+La respuesta es un mensaje que dice "Unidad eliminada"
+
+> FIN
 

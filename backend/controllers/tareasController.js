@@ -89,11 +89,7 @@ const eliminarTarea = async (req, res) => {
   }
 
   try {
-    const unidad = await Unidad.findById(tarea.unidad);
-    unidad.tareas.pull(tarea._id); // pull ==> mongoose // estudiar
-
-    await Promise.allSettled([await unidad.save(), await tarea.deleteOne()]); //* estudiar --> comparar con Promise.all
-
+    await tarea.deleteOne()
     res.json({ msg: "La tarea se elimino" });
   } catch (error) {
     console.log(error);

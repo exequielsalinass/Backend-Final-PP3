@@ -2,9 +2,10 @@ import Unidad from "../models/Unidad.js";
 import Usuario from "../models/Usuario.js";
 
 const obtenerUnidades = async (req, res) => {
-  const unidades = await Unidad.find({
+  /* const unidades = await Unidad.find({
     $or: [{ alumnos: { $in: req.usuario } }, { creador: { $in: req.usuario } }],
-  }).select("-tareas");
+  }).select("-tareas"); */
+  const unidades = await Unidad.find().where('creador').equals(req.usuario)
 
   res.json(unidades);
 };
@@ -33,7 +34,7 @@ const obtenerUnidad = async (req, res) => {
     return res.status(404).json({ msg: error.message });
   }
 
-  if (unidad.creador.toString() !== req.usuario._id.toString()) {
+  if (unidad.creador.toString() !== req.usuario._id.toString()) { //Consultar porque cuando comparo dos objetos me da false
     const error = new Error("No tienes permiso");
     return res.status(401).json({ msg: error.message });
   }

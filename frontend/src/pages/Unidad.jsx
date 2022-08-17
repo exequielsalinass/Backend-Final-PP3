@@ -22,8 +22,6 @@ function Unidad() {
 
   const { nombre, descripcion, nivel } = unidad;
 
-  console.log(unidad)
-
   if (cargando) return <Spinner/>;
 
   const { msg } = alerta;
@@ -61,9 +59,9 @@ function Unidad() {
 
       <h1 className='text-xl mt-3'>{descripcion}</h1>
 
-      {/* {admin && (
+      {/* {admin && ( */}
         <button
-          onClick={handleModalTarea}
+          /* onClick={handleModalTarea} */
           type="button"
           className="text-sm px-5 py-3 w-full md:w-auto rounded-lg uppercase font-bold bg-sky-400 text-white text-center mt-5 flex gap-2 items-center justify-center"
         >
@@ -81,7 +79,7 @@ function Unidad() {
           </svg>
           Nueva Tarea
         </button>
-      )} */}
+      {/* )} */}
       <p className="font-bold text-xl mt-10">Tareas del Proyecto</p>
 
        {/* <div className="bg-white shadow mt-10 rounded-lg ">
