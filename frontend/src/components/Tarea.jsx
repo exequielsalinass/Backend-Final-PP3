@@ -2,10 +2,19 @@ import { formatearFecha } from "../helpers/fecha.js";
 import useUnidades from "../hooks/useUnidades.jsx";
 
 function Tarea({ tarea }) {
-  const { handleModalEditarTarea, handleModalEliminarTarea, completarTarea } =
+  const { handleModalEditarTarea, /* handleModalEliminarTarea */ eliminarTarea, completarTarea } =
     useUnidades();
 
   const { descripcion, nombre, ejercicio, fechaEntrega, estado, _id } = tarea;
+
+  const handleClick = () => {
+    if (confirm("¿Deseas eliminar esta tarea?")) {
+      eliminarTarea(_id);
+    }
+  };   
+
+/* 
+  console.log(_id) */
 
   return (
     <div className="border-b p-5 flex justify-between items-center">
@@ -57,7 +66,8 @@ function Tarea({ tarea }) {
 
         <button
           className="bg-red-600 hover:bg-red-700 transition-colors px-4 py-3 text-white uppercase font-bold text-sm rounded-lg cursor-pointer"
-          onClick={() => handleModalEliminarTarea(tarea)}
+          /* onClick={() => handleModalEliminarTarea(tarea)} */
+          onClick={handleClick}
         >
           Eliminar
         </button>

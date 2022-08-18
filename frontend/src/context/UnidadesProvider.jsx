@@ -195,7 +195,7 @@ const UnidadesProvider = ({ children }) => {
 
   const handleModalTarea = () => {
     setModalFormularioTarea(!modalFormularioTarea);
-    setTarea({});   //* Siempre que creo una nueva tarea, el formulario debe estar vacío
+    setTarea({}); //* Siempre que creo una nueva tarea, el formulario debe estar vacío
   };
 
   const submitTarea = async (tarea) => {
@@ -221,8 +221,8 @@ const UnidadesProvider = ({ children }) => {
       const { data } = await clienteAxios.post("/tareas", tarea, config);
 
       // Agregar la tarea al state
-      const unidadActualizada = { ...unidad };            //* Copia del objeto: unidad
-      unidadActualizada.tareas = [...unidad.tareas, data];  //* Es un array porque tareas es una array -> le agrego data (tarea creada)
+      const unidadActualizada = { ...unidad }; //* Copia del objeto: unidad
+      unidadActualizada.tareas = [...unidad.tareas, data]; //* Es un array porque tareas es una array -> le agrego data (tarea creada)
 
       setUnidad(unidadActualizada);
       setAlerta({});
@@ -255,7 +255,7 @@ const UnidadesProvider = ({ children }) => {
         config
       );
 
-      console.log(data)
+      console.log(data);
 
       //* Actualizar el state
       const unidadActualizada = { ...unidad }; // Tomo una copia de la unidad que esta en el state
@@ -266,6 +266,39 @@ const UnidadesProvider = ({ children }) => {
 
       setAlerta({});
       setModalFormularioTarea(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const eliminarTarea = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await clienteAxios.delete(`/tareas/${id}`, config);
+      setAlerta({
+        msg: data.msg,
+        error: false,
+      });
+
+      const unidadActualizada = { ...unidad };
+      unidadActualizada.tareas = unidadActualizada.tareas.filter(
+        (tareaState) => tareaState._id !== id
+      );
+
+      setUnidad(unidadActualizada);
+      setTarea({})
+      setTimeout(() => {
+        setAlerta({});
+      }, 3000);
     } catch (error) {
       console.log(error);
     }
@@ -287,7 +320,8 @@ const UnidadesProvider = ({ children }) => {
         handleModalTarea,
         submitTarea,
         tarea,
-        handleModalEditarTarea
+        handleModalEditarTarea,
+        eliminarTarea,
       }}
     >
       {children}
