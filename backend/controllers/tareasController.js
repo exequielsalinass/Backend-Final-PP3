@@ -18,9 +18,9 @@ const agregarTarea = async (req, res) => {
 
   try {
     const tareaAlmacenda = await Tareas.create(req.body);
-    /* // Almacenar el id en la unidad
+    // Almacenar el id en la unidad
     existeUnidad.tareas.push(tareaAlmacenda._id);
-    await existeUnidad.save(); */
+    await existeUnidad.save();
     res.json(tareaAlmacenda);
   } catch (error) {
     console.log(error);

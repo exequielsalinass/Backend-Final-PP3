@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useParams , Link } from "react-router-dom";
 import useUnidades from "../hooks/useUnidades";
 import Spinner from '../components/Spinner'
+import ModalFormularioTarea from "../components/ModalFormularioTarea";
+import Tarea from "../components/Tarea";
 /* import useAdmin from "../hooks/useAdmin"; */
 /* import ModalFormularioTarea from "../components/ModalFormularioTarea";
 import ModalEliminarTarea from "../components/ModalEliminarTarea";
@@ -12,7 +14,7 @@ import ModalEliminarColaborador from "../components/ModalEliminarColaborador"; *
 
 function Unidad() {
   const params = useParams();
-  const { obtenerUnidad, unidad, cargando,/* , handleModalTarea, */ alerta } = useUnidades();
+  const { obtenerUnidad, unidad, cargando, handleModalTarea, alerta } = useUnidades();
 
   /* const admin = useAdmin(); */
 
@@ -23,8 +25,6 @@ function Unidad() {
   const { nombre, descripcion, nivel } = unidad;
 
   if (cargando) return <Spinner/>;
-
-  const { msg } = alerta;
 
   return (
     <>
@@ -61,7 +61,7 @@ function Unidad() {
 
       {/* {admin && ( */}
         <button
-          /* onClick={handleModalTarea} */
+          onClick={handleModalTarea}
           type="button"
           className="text-sm px-5 py-3 w-full md:w-auto rounded-lg uppercase font-bold bg-sky-400 text-white text-center mt-5 flex gap-2 items-center justify-center"
         >
@@ -80,19 +80,19 @@ function Unidad() {
           Nueva Tarea
         </button>
       {/* )} */}
-      <p className="font-bold text-xl mt-10">Tareas del Proyecto</p>
+      <p className="font-bold text-sky-700 uppercase text-xl mt-10">Tareas de la Unidad</p>
 
-       {/* <div className="bg-white shadow mt-10 rounded-lg ">
+       <div className="bg-white shadow mt-10 rounded-lg ">
         {unidad.tareas?.length ? (
           unidad.tareas?.map((tarea) => (
             <Tarea key={tarea._id} tarea={tarea} />
           ))
         ) : (
-          <p className="text-center my-5 p-10">
+          <p className="text-center text-red-700 uppercase my-5 p-10">
             No hay Tareas en este proyecto
           </p>
         )}
-      </div>  */}
+      </div> 
 
        {/* {admin && (
         <>
@@ -120,8 +120,8 @@ function Unidad() {
         </>
       )}  */}
 
-       {/* <ModalFormularioTarea />
-      <ModalEliminarTarea />
+       <ModalFormularioTarea />
+      {/* <ModalEliminarTarea />
       <ModalEliminarColaborador />  */}
     </>
   );

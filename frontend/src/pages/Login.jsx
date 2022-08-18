@@ -32,7 +32,7 @@ function Login() {
       });
       setAlerta({});
       localStorage.setItem("token", data.token);
-      setAuth(data);
+      await setAuth(data);
       navigate("/unidades");
       
     } catch (error) {

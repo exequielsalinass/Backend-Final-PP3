@@ -5,7 +5,7 @@ const obtenerUnidades = async (req, res) => {
   /* const unidades = await Unidad.find({
     $or: [{ alumnos: { $in: req.usuario } }, { creador: { $in: req.usuario } }],
   }).select("-tareas"); */
-  const unidades = await Unidad.find().where('creador').equals(req.usuario)
+  const unidades = await Unidad.find().where('creador').equals(req.usuario)/* .select('-tareas') */
 
   res.json(unidades);
 };
@@ -25,7 +25,7 @@ const nuevaUnidad = async (req, res) => {
 const obtenerUnidad = async (req, res) => {
   const { id } = req.params;
 
-  const unidad = await Unidad.findById(id);
+  const unidad = await Unidad.findById(id).populate('tareas') //* Trae las tareas de la unidad
   /* .populate({ path: 'tareas', populate: {path: 'completado', select: 'nombre'} })
     .populate("alumnos", "nombre email"); */
 
