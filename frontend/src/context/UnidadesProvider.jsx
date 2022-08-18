@@ -195,7 +195,7 @@ const UnidadesProvider = ({ children }) => {
 
   const handleModalTarea = () => {
     setModalFormularioTarea(!modalFormularioTarea);
-    setTarea({});
+    setTarea({});   //* Siempre que creo una nueva tarea, el formulario debe estar vacío
   };
 
   const submitTarea = async (tarea) => {
@@ -237,7 +237,7 @@ const UnidadesProvider = ({ children }) => {
     setModalFormularioTarea(true);
   };
 
-  /* const editarTarea = async (tarea) => {
+  const editarTarea = async (tarea) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
@@ -255,18 +255,21 @@ const UnidadesProvider = ({ children }) => {
         config
       );
 
-      const proyectoActualizado = { ...proyecto };
-      proyectoActualizado.tareas = proyectoActualizado.tareas.map(
-        (tareaState) => (tareaState._id === data._id ? data : tareaState)
+      console.log(data)
+
+      //* Actualizar el state
+      const unidadActualizada = { ...unidad }; // Tomo una copia de la unidad que esta en el state
+      unidadActualizada.tareas = unidadActualizada.tareas.map(
+        (tareaState) => (tareaState._id === data._id ? data : tareaState) // Si los d
       );
-      setProyecto(proyectoActualizado);
+      setUnidad(unidadActualizada);
 
       setAlerta({});
       setModalFormularioTarea(false);
     } catch (error) {
       console.log(error);
     }
-  }; */
+  };
 
   return (
     <UnidadContext.Provider

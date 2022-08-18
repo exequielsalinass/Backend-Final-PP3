@@ -23,12 +23,12 @@ const ModalFormularioTarea = () => {
   } = useUnidades();
 
   useEffect(() => {
-    if (tarea?._id) {
+    if (tarea?._id) {           //* Si hay un id significa que estoy editando
       setId(tarea._id);
       setNombre(tarea.nombre);
       setDescripcion(tarea.descripcion);
       setEjercicio(tarea.ejercicio);
-      setFechaEntrega(tarea.fechaEntrega?.split("T")[0]);
+      setFechaEntrega(tarea.fechaEntrega.split("T")[0]); //* Poner el ?
       return;
     }
     setId("");
@@ -52,7 +52,7 @@ const ModalFormularioTarea = () => {
     }
 
     await submitTarea({
-      id,
+      id,           // Le paso el id para saber si existe = editar || crear tarea
       nombre,
       descripcion,
       fechaEntrega,

@@ -24,6 +24,8 @@ function Unidad() {
 
   const { nombre, descripcion, nivel } = unidad;
 
+  console.log(unidad)
+
   if (cargando) return <Spinner/>;
 
   return (
@@ -89,7 +91,7 @@ function Unidad() {
           ))
         ) : (
           <p className="text-center text-red-700 uppercase my-5 p-10">
-            No hay Tareas en este proyecto
+            No hay Tareas en esta unidad
           </p>
         )}
       </div> 
